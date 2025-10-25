@@ -25,7 +25,10 @@ jobs:
         with:
           buildkitd-flags: --debug
 
-      - name: Log in to GHCR
+      - name: Owner in lowercase
+        run: echo "OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Login a GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -40,4 +43,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/yolks:nodejs_${{ matrix.tag }}
+            ghcr.io/${{ env.OWNER_LC }}/yolks:nodejs_${{ matrix.tag }}
