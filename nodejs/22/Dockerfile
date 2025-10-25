@@ -10,7 +10,12 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
  && useradd -m -d /home/container container
 
-RUN npm install npm@latest typescript ts-node @types/node --location=global
+RUN npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000
+
+RUN npm i -g --no-audit --no-fund npm@latest
+RUN npm i -g --no-audit --no-fund typescript ts-node @types/node
 
 USER        container
 ENV         USER=container HOME=/home/container
